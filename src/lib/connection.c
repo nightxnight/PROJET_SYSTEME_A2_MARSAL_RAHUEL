@@ -40,6 +40,8 @@ Connection* openConnection(const char* toAddr, const int port) {
 Connection* prepareHost(const int port) {
     Connection* connection = createConnection();
 
+    if (setsockopt(connection->socket, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0) error("setsockopt(SO_REUSEADDR) failed");
+
     connection->coord.sin_port = htons(port);
     connection->coord.sin_addr.s_addr = htonl(INADDR_ANY);
 
